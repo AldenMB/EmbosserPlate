@@ -18,7 +18,8 @@ measured = ns(
         separation = 15,
         depth = 1.4
     ),
-    thickness = 2.3
+    thickness = 2.3,
+    tang = 14.5
 )
 
 
@@ -42,6 +43,12 @@ for x in [i*(measured.rectangle.separation+measured.rectangle.width)/2 for i in 
     top = top.moveTo(x, measured.diameter/2 - measured.rectangle.front_offset - measured.rectangle.length/2)
     top = top.rect(measured.rectangle.width, measured.rectangle.length)
 top = top.extrude(measured.thickness)
+top = top.cut(
+    cq.Workplane('XZ')
+    .moveTo(0, measured.gap/2 + lip.thickness)
+    .rect(measured.tang, 2*lip.thickness)
+    .extrude(measured.diameter)
+)
 
 base = base.faces('<Z[1]').workplane()
 for center in [
